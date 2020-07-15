@@ -37,15 +37,17 @@ export class AppComponent implements OnInit {
 
   registerBridgeHandler() {
     this.checkJSBridgeStatus();
-    this.bridge.registerHandler('testJavascriptHandler', function (
-      data,
-      responseCallback
-    ) {
-      this.log('iOS called testJavascriptHandler with', data, 'native');
-      var responseData = { 'Javascript Says': 'Right back atcha!' };
-      this.log('JS responding with', responseData, 'native');
-      responseCallback(responseData);
-    });
+    this.bridge.registerHandler(
+      'testJavascriptHandler',
+      this.functionOnIOSCall.bind(this)
+    );
+  }
+
+  functionOnIOSCall(data, responseCallback) {
+    this.log('iOS called testJavascriptHandler with', data, 'native');
+    var responseData = { 'Javascript Says': 'Right back atcha!' };
+    this.log('JS responding with', responseData, 'native');
+    responseCallback(responseData);
   }
 
   log(message, data, type) {
